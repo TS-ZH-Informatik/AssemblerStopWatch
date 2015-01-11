@@ -1,0 +1,222 @@
+;------------------------------------------------------------------------
+;                                                                       |
+;   FILE        :für Uebungsprogramme mit Display                       |
+;   DATE        :Nov 2014                                               |
+;   DESCRIPTION :Template für M16C65 Uebungen an der Juventus           |
+;   CPU GROUP   :M16C65                                                 |
+;   Owner       :Martin Burger                                          |
+;                                                                       |
+;   Version: 1.0                                                        |
+;                                                                       |
+;------------------------------------------------------------------------
+
+
+;*********************************************************************
+;
+;     *** Include Files ***
+;
+;*********************************************************************
+	.include sfr65.inc
+	.include Init_M16C65.inc
+	.include displaydriver.inc
+	.include clockdriver.inc
+	.include StringDriver.inc
+
+
+ProgramStart:
+
+;*********************************************************************
+;
+;     *** Initialization ***
+;
+;*********************************************************************	
+	JSR clockInit
+	JSR displayInit
+
+;	Button Interrupts vorbereiten
+	mov.b #000h, pd8		;Set Buttons as Input
+	mov.b #07h, int0ic		;Enable Button1 Interrupt
+	mov.b #07h, int1ic		;Enable Button2 Interrupt
+	mov.b #07h, int2ic		;Enable Button3 Interrupt
+
+
+
+
+;	StopUhr	
+	MSecCounter .EQU 0500h
+	Mov.b	#100,MSecCounter
+	StopWatchCounter	.EQU 0510h			; Speicher für Vergangene 1/10 Sekunden
+	Mov.W	#0000,StopWatchCounter
+	
+	
+;	Timer Init
+
+TimerInit:
+mov.b #07h,ta0ic	;Set Interrupt Priority 7 for Timer A0
+mov.b #00h,tacs0	;Seite 312 Usermanual 
+mov.b #00h,ta0mr	;Enable Timer Mode
+mov.w #24000,ta0	;Load Timer A0 with 24000
+
+
+
+
+;	Variablen
+;	Output Variablen
+	Output1	.EQU	0540h
+	Output2	.EQU	0550h
+	
+;	Wordlenght
+	WordLenght	.EQU	0490h
+	
+
+
+	fset I
+
+
+JSR displayClearBuffer
+
+;*********************************************************************
+;
+;     *** Programm ***
+;
+;*********************************************************************	
+	
+Loop:
+
+	JSR displayClearBuffer	
+	Mov.W	StopWatchCounter,R0
+	Mov.W	#00h,R2
+	Div.W	#010		;Resultat ist in R0 Sekunden Rest in R2 Milisekunden
+		
+	
+	
+	Mov.W	#Output1, A0
+	JSR		UINT16ToString
+	
+	Mov.w	#0000,R0
+	JSR 	displaySetPos
+	JSR		displayWriteString
+	
+	Mov.W	#Output1, A0
+	JSR		CountWordLenght	
+	Mov.B 	WordLenght,R0L
+	JSR 	displaySetPos
+	Mov.B	#2Eh,R0L
+	JSR		displayWriteChar
+	ADD.W	#01h,WordLenght
+	
+	
+	
+	Mov.W	#Output2, A0
+	Mov.W	R2,R0
+	JSR		UINT16ToString
+	Mov.W	#0000h,R0
+	Mov.B 	WordLenght,R0L
+	JSR 	displaySetPos
+	
+
+	
+	
+	JSR		displayWriteString
+	
+	
+;	Mov.b	#2Eh,0530h
+;	Mov.b	#0Ch,0531h
+;	Mov.w #0530h,A0
+;	Mov.w 	WordLenght,R0
+;	JSR 	displaySetPos
+;	JSR displayWriteString
+	
+	
+	JSR		displayForceUpdate
+	
+	jmp Loop
+
+;*********************************************************************
+;
+;     *** HelpFunctions ***
+;
+;*********************************************************************	
+
+CountWordLenght:
+	
+	Push.W R0
+	Push.W A0
+	Mov.w	#00h,R0
+StartCount:
+	cmp.b	#0Ch,[A0]
+	jz	EndFunction
+	ADD.W	#01h,R0
+	Inc.W	A0
+	jmp		StartCount
+	
+EndFunction:
+	Mov.W R0,WordLenght
+;	ADD.W	#01h,WordLenght
+	Pop.W A0
+	Pop.W R0
+RTS
+
+
+
+
+
+
+
+
+;*********************************************************************
+;
+;     *** Interrupts ***
+;
+;*********************************************************************	
+
+
+Timer_int:
+	
+	
+	Sub.b	#01,MSecCounter
+	cmp.b	#00,MSecCounter
+	JNZ		END_INT
+	ADD.W	#01h,StopWatchCounter
+	Mov.b	#100,MSecCounter
+
+END_INT:
+reit
+
+
+;Start Stop Timer
+Button1_int:
+	
+	btst ta0s	;Test ob bereits läuft?
+	jnz TimerDisable
+	bset ta0s	;Start Timer A0	
+reit
+
+TimerDisable:
+	bclr ta0s	;Stop Timer A0
+
+reit
+
+
+;Reset Timer:
+Button2_int:
+	bclr ta0s	;Stop Timer A0
+	Mov.b	#100,MSecCounter
+	Mov.W	#0000,StopWatchCounter
+	
+reit
+
+
+
+; dummy interrupt function
+;---------------------------------------------------------------------
+
+dummy_int:
+		reit
+
+; Interrupt Vektoren
+;---------------------------------------------------------------------
+	.include IRQ_Vect.inc
+		
+
+.End	

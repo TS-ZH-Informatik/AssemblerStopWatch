@@ -1,0 +1,5 @@
+-L "nc30lib"
+-G
+-MS
+-O "C:\WorkSpace\StopUhr\StopUhr\Debug\StopUhr.x30"
+"C:\WorkSpace\StopUhr\StopUhr\Debug\Programm.r30"

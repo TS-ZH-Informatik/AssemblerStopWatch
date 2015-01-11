@@ -1,0 +1,79 @@
+##########################################
+# (1) LINK INFORMATION                   #
+##########################################
+c:\program files (x86)\renesas\hew\tools\renesas\nc30wa\v545r01\bin\ln30.exe @C:\WorkSpace\StopUhr\StopUhr\Debug\StopUhr.m16cl
+
+# ID CODE DATA
+.ID  "#FFFFFFFFFFFFFF"
+
+# ROM CODE PROTECT DATA
+.PROTECT  FFH
+
+# LINK FILE INFORMATION
+Programm (C:\WorkSpace\StopUhr\StopUhr\Debug\Programm.r30)
+	Jan 11 12:54:06 2015
+
+
+##########################################
+# (2) SECTION INFORMATION                #
+##########################################
+# SECTION                        ATR TYPE    START  LENGTH ALIGN MODULENAME
+program                          ABS CODE    0A0000 000546       Programm
+vector                           ABS ROMDATA 0FF000 000100       Programm
+fvector                          ABS ROMDATA 0FFFDC 000024       Programm
+# Total -------------------------------------------------------------------
+                                     DATA           000000(0000000) Byte(s)
+                                     ROMDATA        000124(0000292) Byte(s)
+                                     CODE           000546(0001350) Byte(s)
+
+##########################################
+# (3) GLOBAL LABEL INFORMATION           #
+##########################################
+start              0a0000  
+
+##########################################
+# (4) GLOBAL EQU SYMBOL INFORMATION      #
+##########################################
+
+##########################################
+# (5) GLOBAL EQU BIT-SYMBOL INFORMATION  #
+##########################################
+
+##########################################
+# (6) LOCAL LABEL INFORMATION            #
+##########################################
+@ Programm ( C:\WorkSpace\StopUhr\StopUhr\Debug\Programm.r30 )
+
+##########################################
+# (7) LOCAL EQU SYMBOL INFORMATION       #
+##########################################
+@ Programm ( C:\WorkSpace\StopUhr\StopUhr\Debug\Programm.r30 )
+
+##########################################
+# (8) LOCAL EQU BIT-SYMBOL INFORMATION   #
+##########################################
+@ Programm ( C:\WorkSpace\StopUhr\StopUhr\Debug\Programm.r30 )
+
+*** Mapping List ***
+
+SECTION                            START      END         SIZE   ALIGN
+
+program
+                                  000a0000  000a0545       546   1
+vector
+                                  000ff000  000ff0ff       100   1
+fvector
+                                  000fffdc  000fffff        24   1
+
+*** Symbol List ***
+
+SECTION=
+FILE=                               START        END    SIZE
+  SYMBOL                            ADDR        SIZE    INFO      COUNTS  OPT
+
+SECTION=program
+FILE=Programm
+                                  000a0000  000a0545       546
+  start
+                                  000a0000         0   none ,g         0
+

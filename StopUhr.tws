@@ -1,0 +1,19 @@
+[HIMDBVersion]
+2.0
+[DATABASE_VERSION]
+"1.2" 
+[CURRENT_PROJECT]
+"StopUhr" 
+[GENERAL_DATA]
+[BREAKPOINTS]
+[OPEN_WORKSPACE_FILES]
+"C:\WorkSpace\Stopwatch\StopUhr\displaydriver.inc" 
+"C:\WorkSpace\Stopwatch\StopUhr\Init_M16C65.inc" 
+"C:\WorkSpace\Stopwatch\StopUhr\Programm.a30" 
+[WORKSPACE_FILE_STATES]
+"C:\WorkSpace\Stopwatch\StopUhr\Init_M16C65.inc" 25 25 948 321 0 1 
+"C:\WorkSpace\Stopwatch\StopUhr\Programm.a30" 0 0 944 317 0 0 
+"C:\WorkSpace\Stopwatch\StopUhr\displaydriver.inc" -8 -30 1114 509 1 2 
+[LOADED_PROJECTS]
+"StopUhr" 
+[END]
